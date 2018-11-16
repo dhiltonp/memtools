@@ -9,6 +9,7 @@ from pympler import asizeof
 
 def num_str(num):
     prefixes = {
+        0: '',
         3: 'k',
         6: 'M',
         9: 'G',
@@ -20,22 +21,19 @@ def num_str(num):
     }
     precision = 3
 
-    if num >= 10**precision:
-        shifts = 0
-        while num >= 10**precision:
-            shifts += 1
-            num /= 10
-        truncated = round(num)
+    shifts = 0
+    while num >= 10**precision:
+        shifts += 1
+        num /= 10
+    truncated = round(num)
 
-        prefix_power = math.ceil(shifts/3)*3
-        prefix = prefixes[prefix_power]
+    prefix_power = math.ceil(shifts/3)*3
+    prefix = prefixes[prefix_power]
 
-        divisor = 10**(prefix_power-shifts)
-        if divisor != 1:
-            truncated /= divisor
-        return str(truncated)+prefix
-    else:
-        return str(num)
+    divisor = 10**(prefix_power-shifts)
+    if divisor != 1:
+        truncated /= divisor
+    return str(truncated)+prefix
 
 
 class _MemInfo:
