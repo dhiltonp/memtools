@@ -121,9 +121,8 @@ class MemGraph:
         max_ref_size = self.root.self_size
         min_ref_size = max_ref_size * min_ref_percent
 
-        name = 'memgraph'
         filename = time.strftime(name+"-%Y%m%d-%H%M%S.gv")
-        self.g = graphviz.Digraph(name=name, directory="/tmp/", filename=filename)
+        self.g = graphviz.Digraph(name=name, directory=directory, filename=filename)
 
         self._render_node(self.root, max_ref_size)
 
