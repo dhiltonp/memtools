@@ -39,7 +39,7 @@ All objs is a special case and isn't linked. For it, objs and self represent all
 passed in to MemGraph. ref includes memory used in generating the graph. ref is
 not used anywhere - `min_ref_percent` is only based on objects passed in to MemGraph.
 
-=====================
+-----------------------------
 
 Here is more complex output from test_classify:
 
