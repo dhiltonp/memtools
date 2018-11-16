@@ -11,6 +11,8 @@ def test_num_str():
     assert num_str(123456) == "123k"
     assert num_str(1234567) == "1.23M"
 
+    assert num_str(1000000) == "1.0M"
+
 
 class TestMemInfo:
     def test_leaf(self):

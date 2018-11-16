@@ -20,9 +20,9 @@ def num_str(num):
     }
     precision = 3
 
-    if num > 10**precision:
+    if num >= 10**precision:
         shifts = 0
-        while num > 10**precision:
+        while num >= 10**precision:
             shifts += 1
             num /= 10
         truncated = round(num)
