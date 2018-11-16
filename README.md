@@ -18,7 +18,7 @@ Usage is quite simple:
     g.view()  # or render()
 ```
 
-`view` and `render` both share the same signature: `(name='memgraph', directory='/tmp', min_ref_percent=.05)`.
+`view` and `render` both share the same signature: `(name='memgraph', directory='.', min_ref_percent=.05)`.
 
 Files are rendered to `directory/name-%Y%m%d-%H%M%S.gv` (`.pdf`).
 

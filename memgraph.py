@@ -141,10 +141,10 @@ class MemGraph:
         w = max(5 * edge.ref_size / max_ref_size, .2)
         self.g.edge(tail_name=str(id(node.type)), head_name=str(id(edge.type)), label=str(edge), penwidth=str(w), weight=str(w))
 
-    def render(self, name='memgraph', directory='/tmp', min_ref_percent=.05):
+    def render(self, name='memgraph', directory=None, min_ref_percent=.05):
         self._render(name, directory, min_ref_percent)
         self.g.render()
 
-    def view(self, name='memgraph', directory='/tmp', min_ref_percent=.05):
+    def view(self, name='memgraph', directory=None, min_ref_percent=.05):
         self._render(name, directory, min_ref_percent)
         self.g.view()
