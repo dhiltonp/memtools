@@ -133,7 +133,7 @@ class MemGraph:
             self.nodes.append(_MemNode(objs))
 
     def _render(self, name, directory, min_ref_percent):
-        max_ref_size = self.root.ref_size
+        max_ref_size = self.root.self_size
         min_ref_size = max_ref_size * min_ref_percent
 
         name = 'memgraph'
