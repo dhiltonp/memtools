@@ -47,7 +47,7 @@ Here is more complex output from test_classify:
 ![Sample output from test_classify](https://i.imgur.com/xoz73fI.png)
 
 
-ReferencesMem is now responsible for 30% of all memory use.
+This output is actually identical to the first example, but with ReferencesMem using less memory.
 
 
 
