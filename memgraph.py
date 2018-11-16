@@ -93,6 +93,8 @@ class _MemNode(_MemInfo):
 
 
 class _RootNode(_MemNode):
+    # self_size = all objects passed in
+    # ref_size includes overhead from the graph generation
     def __init__(self, objs):
         super().__init__(objs)
 
