@@ -5,10 +5,11 @@ This has a couple of utilities/examples of finding memory leaks in python.
 Most important is MemGraph, which uses graphviz to show which classes refer
 to the most memory.
 
-
 #### Memgraph
 
-Usage is quite simple:
+MemGraph requires `graphviz` and `pympler`.
+
+Copy memgraph.py to your project, then:
 
 ```python
     from pympler import muppy
@@ -22,7 +23,7 @@ Usage is quite simple:
 
 Files are rendered to `directory/name-%Y%m%d-%H%M%S.gv` (`.pdf`).
 
-By default, only usage that accounts for >5% of memory usage are represented. This is applied both for nodes and edges.
+By default, only usage that accounts for >5% of memory usage is represented. This applies to nodes and edges.
 
 ***This is an expensive operation, both in CPU and memory.***
 
