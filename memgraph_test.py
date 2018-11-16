@@ -149,7 +149,7 @@ class TestMemGraph:
         class ReferencesMem:
             def __init__(self):
                 self.stuff = []
-                for i in range(100000):
+                for i in range(250000):
                     self.stuff.append(i)
 
         r = ReferencesMem()
