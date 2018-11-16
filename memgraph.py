@@ -107,25 +107,10 @@ class _RootNode(_MemNode):
 
 class MemGraph:
     def __init__(self, objs):
-        # try to identify all related objects?
-        # for i in range(50):
-        #     objs_tmp = gc.get_referents(*objs)
-        #     if len(objs) == len(objs_tmp):
-        #         break
-        #     objs = objs_tmp
-
+        # We feed all objects into a "Root" node.
+        #  This classifies edges by class, which we
+        #  then use as input into actual Nodes.
         self.root = _RootNode(objs)
-        # RootNode classifies *all* objects by types into edges
-        # sort by size, then limit?
-
-        # all = gc.get_objects()
-        # all_size = 0
-        # for obj in all:
-        #     all_size += sys.getsizeof(obj)
-
-        # sorted_clusters = sorted(root.edges.values(), key=lambda x: x.ref_size, reverse=True)
-        # important_types = set([edge.type for edge in sorted_clusters[:100]])
-        # clustered_objs = [edge.objs for edge in sorted_clusters[:100]]
         clustered_objs = [edge.objs for edge in self.root.edges.values()]
         self.nodes = []
 
