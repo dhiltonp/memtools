@@ -142,6 +142,16 @@ class MemGraph:
     def render(self, min_ref_percent=.05, name='memgraph',
                directory=None, view=False, cleanup=False,
                format=None, renderer=None, formatter=None):
+        """
+        :param min_ref_percent: minimum memory usage to be rendered
+        :param name: name of graph, also prefix for output file
+        :param directory: directory for source saving and rendering.
+        :param view: Open the rendered result with the default application
+        :param cleanup: Delete the source file after rendering.
+        :param format: The output format used for rendering (``'pdf'``, ``'png'``, ``'svg'``, etc.)
+        :param renderer: The output renderer used for rendering (``'cairo'``, ``'gd'``, ...).
+        :param formatter: The output formatter used for rendering (``'cairo'``, ``'gd'``, ...).
+        """
         self.g = graphviz.Digraph(name=name)
         self._render(min_ref_percent)
         

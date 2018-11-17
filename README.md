@@ -19,10 +19,10 @@ Copy memgraph.py to your project, then:
     g.render()  # maybe with view=True?
 ```
 
-Files are rendered to `directory/name-%Y%m%d-%H%M%S.gv`.
-
 By default, only classes that are responsible for >5% of
 memory usage are represented. This applies to both nodes and edges.
+
+Files are output to `./name-%Y%m%d-%H%M%S.gv`.
 
 #### Output
 
