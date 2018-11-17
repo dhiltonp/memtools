@@ -15,14 +15,13 @@ Usage is quite simple:
     from memgraph import MemGraph
 
     g = MemGraph(muppy.get_objects())
-    g.view()  # or render()
+    g.render()  # maybe with view=True?
 ```
 
-`view` and `render` both share the same signature: `(name='memgraph', directory='.', min_ref_percent=.05)`.
+Files are rendered to `directory/name-%Y%m%d-%H%M%S.gv`.
 
-Files are rendered to `directory/name-%Y%m%d-%H%M%S.gv` (`.pdf`).
-
-By default, only usage that accounts for >5% of memory usage are represented. This is applied both for nodes and edges.
+By default, only classes that are responsible for >5% of
+memory usage are represented. This applies to both nodes and edges.
 
 ***This is an expensive operation, both in CPU and memory.***
 

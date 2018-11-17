@@ -111,18 +111,16 @@ class MemGraph:
         #  This classifies edges by class, which we
         #  then use as input into actual Nodes.
         self.root = _RootNode(objs)
-        clustered_objs = [edge.objs for edge in self.root.edges.values()]
+        self.g = None
         self.nodes = []
 
+        clustered_objs = [edge.objs for edge in self.root.edges.values()]
         for objs in clustered_objs:
             self.nodes.append(_MemNode(objs))
 
-    def _render(self, name, directory, min_ref_percent):
+    def _render(self, min_ref_percent):
         max_ref_size = self.root.self_size
         min_ref_size = max_ref_size * min_ref_percent
-
-        filename = time.strftime(name+"-%Y%m%d-%H%M%S.gv")
-        self.g = graphviz.Digraph(name=name, directory=directory, filename=filename)
 
         self._render_node(self.root, max_ref_size)
 
@@ -141,10 +139,16 @@ class MemGraph:
         w = max(5 * edge.ref_size / max_ref_size, .2)
         self.g.edge(tail_name=str(id(node.type)), head_name=str(id(edge.type)), label=str(edge), penwidth=str(w), weight=str(w))
 
-    def render(self, name='memgraph', directory=None, min_ref_percent=.05):
-        self._render(name, directory, min_ref_percent)
-        self.g.render()
+    def render(self, min_ref_percent=.05, name='memgraph',
+               directory=None, view=False, cleanup=False,
+               format=None, renderer=None, formatter=None):
+        self.g = graphviz.Digraph(name=name)
+        self._render(min_ref_percent)
+        
+        filename = time.strftime(name+"-%Y%m%d-%H%M%S.gv")
+        self.g.render(filename=filename, directory=directory, view=view, cleanup=cleanup,
+                      format=format, renderer=renderer, formatter=formatter)
 
-    def view(self, name='memgraph', directory=None, min_ref_percent=.05):
-        self._render(name, directory, min_ref_percent)
-        self.g.view()
+    def view(self, min_ref_percent=.05, name='memgraph', directory=None, cleanup=False):
+        self.render(min_ref_percent=min_ref_percent, name=name,
+                    directory=directory, cleanup=cleanup, view=True)
