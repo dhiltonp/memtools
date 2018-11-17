@@ -28,7 +28,7 @@ memory usage are represented. This applies to both nodes and edges.
 
 Here's a simple, unbalanced case:
 
-![Imgur](https://i.imgur.com/OlwHum5.png)
+![Imgur](https://i.imgur.com/NvW1H0U.png)
 
 Each node and edge show the number of instances (objs), the total referred to memory
 (including self), and memory just used by class instances (self).
@@ -41,7 +41,7 @@ not used anywhere - `min_ref_percent` is only based on objects passed in to MemG
 
 Here is more complex output from test_classify:
 
-![Sample output from test_classify](https://i.imgur.com/xoz73fI.png)
+![Sample output from test_classify](https://i.imgur.com/vWVZCMj.png)
 
 
 This output is actually identical to the first example, but with ReferencesMem using less memory.
