@@ -1,3 +1,8 @@
+# Copyright (c) 2018 David Hilton <dhiltonp@gmail.com>
+#
+# This work is licensed under the terms of the MIT license.
+# see https://github.com/dhiltonp/memtools
+
 import math
 import time
 from collections import defaultdict
