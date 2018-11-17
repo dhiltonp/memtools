@@ -5,10 +5,11 @@ This has a couple of utilities/examples of finding memory leaks in python.
 Most important is MemGraph, which uses graphviz to show which classes refer
 to the most memory.
 
-
 #### Memgraph
 
-Usage is quite simple:
+MemGraph requires `graphviz` and `pympler`.
+
+Copy memgraph.py to your project, then:
 
 ```python
     from pympler import muppy
@@ -23,8 +24,6 @@ Files are rendered to `directory/name-%Y%m%d-%H%M%S.gv`.
 By default, only classes that are responsible for >5% of
 memory usage are represented. This applies to both nodes and edges.
 
-***This is an expensive operation, both in CPU and memory.***
-
 #### Output
 
 Here's a simple, unbalanced case:
@@ -38,14 +37,14 @@ All objs is a special case and isn't linked. For it, objs and self represent all
 passed in to MemGraph. ref includes memory used in generating the graph. ref is
 not used anywhere - `min_ref_percent` is only based on objects passed in to MemGraph.
 
-=====================
+-----------------------------
 
 Here is more complex output from test_classify:
 
 ![Sample output from test_classify](https://i.imgur.com/xoz73fI.png)
 
 
-ReferencesMem is now responsible for 25% of all memory use.
+This output is actually identical to the first example, but with ReferencesMem using less memory.
 
 
 
