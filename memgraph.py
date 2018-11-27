@@ -41,7 +41,7 @@ def num_str(num):
     return str(truncated)+prefix
 
 
-class _MemInfo:
+class _MemInfo(object):
     def __init__(self):
         self.self_size = None  # memory used just by this class
         self.ref_size = None   # total memory referred to, including by children
@@ -65,7 +65,7 @@ class _MemInfo:
 
 class _MemEdge(_MemInfo):
     def __init__(self):
-        super().__init__()
+        super(_MemEdge, self).__init__()
         self._objs = {}
 
     def add(self, obj):
@@ -78,7 +78,7 @@ class _MemEdge(_MemInfo):
 
 class _MemNode(_MemInfo):
     def __init__(self,  objs):
-        super().__init__()
+        super(_MemNode, self).__init__()
         self.objs = objs
         self.edges = defaultdict(_MemEdge)
         self.make_edges()
@@ -99,7 +99,7 @@ class _RootNode(_MemNode):
     # self_size = all objects passed in
     # ref_size includes overhead from the graph generation
     def __init__(self, objs):
-        super().__init__(objs)
+        super(_RootNode, self).__init__(objs)
 
     def get_children(self):
         return self.objs
