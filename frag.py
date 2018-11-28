@@ -22,4 +22,4 @@ def sysmem():
 
     sysmem = len(pages)*page_size
 
-    return num_str(sysmem) + "B", num_str(memsize) + "B", memsize / sysmem
+    return num_str(sysmem) + "B", num_str(memsize) + "B", float(memsize) / sysmem
