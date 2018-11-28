@@ -6,7 +6,7 @@ import sys
 from .memgraph import num_str
 
 
-def sysmem():
+def frag():
     objs = gc.get_objects()
     pages = defaultdict(list)
     page_size = os.sysconf('SC_PAGE_SIZE')
