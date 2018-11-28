@@ -32,12 +32,13 @@ def num_str(num):
         num /= 10
     truncated = round(num)
 
-    prefix_power = math.ceil(shifts/3)*3
+    prefix_power = math.ceil(shifts/3.0)*3
     prefix = prefixes[prefix_power]
 
     divisor = 10**(prefix_power-shifts)
-    if divisor != 1:
-        truncated /= divisor
+    truncated /= divisor
+    if truncated.is_integer():
+        truncated = int(truncated)
     return str(truncated)+prefix
 
 
