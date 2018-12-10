@@ -125,8 +125,8 @@ class MemGraph:
             self.nodes.append(_MemNode(objs))
 
     def _render(self, min_ref_percent):
-        max_ref_size = self.root.self_size
-        min_ref_size = max_ref_size * min_ref_percent
+        max_ref_size = self.root.self_size+.000000001
+        min_ref_size = float(max_ref_size * min_ref_percent)
 
         self._render_node(self.root, max_ref_size)
 
