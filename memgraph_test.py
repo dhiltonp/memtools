@@ -143,6 +143,11 @@ class TestMemGraph:
         g = MemGraph([child1, child2, custom])
         assert len(g.nodes) == 3
 
+        for node in g.nodes:
+            if node.type == Custom:
+                found = True
+        assert found is True
+
         g.render()
 
     def test_classify(self):

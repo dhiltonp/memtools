@@ -55,6 +55,8 @@ class _MemInfo(object):
     def type(self):
         # all self.objs are iterable, but not all can be indexed...
         for v in self.objs:
+            if type(v).__name__ == 'instance':
+                return v.__class__
             return type(v)
 
     def __str__(self):
