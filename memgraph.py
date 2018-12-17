@@ -44,6 +44,7 @@ def num_str(num):
 
 class _MemInfo(object):
     def __init__(self):
+        self.has_dicts = False
         self.self_size = None  # memory used just by this class
         self.ref_size = None   # total memory referred to, including by children
 
@@ -55,12 +56,19 @@ class _MemInfo(object):
     def type(self):
         # all self.objs are iterable, but not all can be indexed...
         for v in self.objs:
+            if self.has_dicts and type(v) == dict:
+                continue
             if type(v).__name__ == 'instance':
                 return v.__class__
             return type(v)
 
     def __str__(self):
-        return "{} objs: {}\nref: {}B, self: {}B".format(self.type.__name__, num_str(len(self.objs)), num_str(self.ref_size), num_str(self.self_size))
+        if self.has_dicts:
+            return "{} objs: {}\nref: {}B, self: {}B".format(self.type.__name__, num_str(len(self.objs)/2),
+                                                             num_str(self.ref_size), num_str(self.self_size))
+        else:
+            return "{} objs: {}\nref: {}B, self: {}B".format(self.type.__name__, num_str(len(self.objs)),
+                                                             num_str(self.ref_size), num_str(self.self_size))
 
     def _graph(self, m, max, parent=None):  # parent is just used by edge
         raise NotImplementedError()
@@ -88,7 +96,32 @@ class _MemNode(_MemInfo):
         self.calc_sizes()
 
     def get_children(self):
-        return gc.get_referents(*self.objs)
+        # we add __dict__ dicts into self.objs to better track memory usage.
+        refs = gc.get_referents(*self.objs)
+
+        # find __dict__s
+        dicts = []
+        for obj in self.objs:  # iterating to determine if type has __dict__
+            if not hasattr(obj, '__dict__'):
+                break
+            self.has_dicts = True
+            for obj in self.objs:
+                dicts.append(getattr(obj, '__dict__'))
+            break
+        dicts = {id(x): x for x in dicts}
+
+        # remove dicts from refs
+        refs = {id(x): x for x in refs if id(x) not in dicts}
+        # find referents from __dict__s and add those to other referents
+        dicts_refs = {id(x): x for x in gc.get_referents(*dicts.values())}
+        refs.update(dicts_refs)
+
+        # add __dicts__ to objs
+        tmp_objs = {id(x): x for x in self.objs}
+        tmp_objs.update(dicts)
+        self.objs = tmp_objs.values()
+
+        return refs.values()
 
     def make_edges(self):
         for obj in self.get_children():

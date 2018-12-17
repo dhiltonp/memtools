@@ -38,6 +38,13 @@ class TestMemInfo:
 
         assert str(info) == "str objs: 2\nref: 112B, self: 112B"
 
+    def test_type(self):
+        info = _MemInfo()
+        info.has_dicts = True
+        info.objs = (dict(), TestMemInfo())
+
+        assert info.type is TestMemInfo
+
 
 class TestMemEdge:
     def test_dedup(self):
@@ -143,10 +150,15 @@ class TestMemGraph:
         g = MemGraph([child1, child2, custom])
         assert len(g.nodes) == 3
 
+        custom_node = False
         for node in g.nodes:
             if node.type == Custom:
-                found = True
-        assert found is True
+                custom_node = node
+                break
+        assert custom_node
+
+        assert int in custom_node.edges
+        assert dict not in custom_node.edges
 
         g.render()
 
@@ -157,7 +169,7 @@ class TestMemGraph:
                 for i in range(250000):
                     self.stuff.append(i)
 
-        r = ReferencesMem()
+        r = ReferencesMem()  # assign to keep the memory used
 
         g = MemGraph(muppy.get_objects())
         g.view()
