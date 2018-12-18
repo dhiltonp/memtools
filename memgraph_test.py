@@ -36,7 +36,7 @@ class TestMemInfo:
         info.objs = ["1", "2"]
         info.calc_sizes()
 
-        assert str(info) == "str objs: 2\nref: 112B, self: 112B"
+        assert str(info) == "str objs: 2\nref: 80B, self: 80B"
 
     def test_type(self):
         info = _MemInfo()
@@ -86,7 +86,7 @@ class TestMemNode:
 
     def test_str(self):
         node = _MemNode([self.parent])
-        assert str(node) == "list objs: 1\nref: 232B, self: 88B"
+        assert str(node) == "list objs: 1\nref: 216B, self: 96B"
 
 
 class TestRootNode:
@@ -100,7 +100,7 @@ class TestRootNode:
         root = _RootNode([child1, child2, child3, parent1, parent2])
 
         assert root.ref_size == root.self_size
-        assert str(root) == "All objs: 5\nref: 304B, self: 304B"
+        assert str(root) == "All objs: 5\nref: 296B, self: 296B"
 
         root2 = _RootNode([parent1, parent2])
         assert root2.ref_size > root2.self_size

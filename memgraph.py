@@ -58,9 +58,18 @@ class _MemInfo(object):
         for v in self.objs:
             if self.has_dicts and type(v) == dict:
                 continue
-            if type(v).__name__ == 'instance':
+            if type(v).__name__ == "instance":
                 return v.__class__
             return type(v)
+
+    @property
+    def uname(self):
+        """
+        returns a unique name based on the class
+        :return:
+        """
+        t = self.type
+        return t.__module__ + "." + t.__name__ + " (" + str(id(t)) + ")"
 
     def __str__(self):
         if self.has_dicts:
@@ -102,11 +111,11 @@ class _MemNode(_MemInfo):
         # find __dict__s
         dicts = []
         for obj in self.objs:  # iterating to determine if type has __dict__
-            if not hasattr(obj, '__dict__'):
+            if not hasattr(obj, "__dict__"):
                 break
             self.has_dicts = True
             for obj in self.objs:
-                dicts.append(getattr(obj, '__dict__'))
+                dicts.append(getattr(obj, "__dict__"))
             break
         dicts = {id(x): x for x in dicts}
 
@@ -174,13 +183,13 @@ class MemGraph:
 
     def _render_node(self, node, max_ref_size):
         w = max(5 * node.ref_size / max_ref_size, .2)
-        self.g.node(name=str(id(node.type)), label=str(node), penwidth=str(w), weight=str(w))
+        self.g.node(name=node.uname, label=str(node), penwidth=str(w), weight=str(w), url=node.uname)
 
     def _render_edge(self, node, edge, max_ref_size):
         w = max(5 * edge.ref_size / max_ref_size, .2)
-        self.g.edge(tail_name=str(id(node.type)), head_name=str(id(edge.type)), label=str(edge), penwidth=str(w), weight=str(w))
+        self.g.edge(tail_name=node.uname, head_name=edge.uname, label=str(edge), penwidth=str(w), weight=str(w))
 
-    def render(self, min_ref_percent=.05, name='memgraph',
+    def render(self, min_ref_percent=.05, name="memgraph",
                directory=None, view=False, cleanup=False,
                format=None, renderer=None, formatter=None):
         """
@@ -200,6 +209,6 @@ class MemGraph:
         self.g.render(filename=filename, directory=directory, view=view, cleanup=cleanup,
                       format=format, renderer=renderer, formatter=formatter)
 
-    def view(self, min_ref_percent=.05, name='memgraph', directory=None, cleanup=False):
+    def view(self, min_ref_percent=.05, name="memgraph", directory=None, cleanup=False):
         self.render(min_ref_percent=min_ref_percent, name=name,
                     directory=directory, cleanup=cleanup, view=True)
