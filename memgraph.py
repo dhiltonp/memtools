@@ -73,11 +73,11 @@ class _MemInfo(object):
 
     def __str__(self):
         if self.has_dicts:
-            return "{} objs: {}\nref: {}B, self: {}B".format(self.type.__name__, num_str(len(self.objs)/2),
-                                                             num_str(self.ref_size), num_str(self.self_size))
+            obj_count = len(self.objs) / 2
         else:
-            return "{} objs: {}\nref: {}B, self: {}B".format(self.type.__name__, num_str(len(self.objs)),
-                                                             num_str(self.ref_size), num_str(self.self_size))
+            obj_count = len(self.objs)
+        return "{} objs: {}\nref: {}B, self: {}B".format(self.type.__name__, num_str(obj_count),
+                                                         num_str(self.ref_size), num_str(self.self_size))
 
     def _graph(self, m, max, parent=None):  # parent is just used by edge
         raise NotImplementedError()
