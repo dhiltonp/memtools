@@ -12,34 +12,25 @@ import graphviz
 from pympler import asizeof
 
 
-def num_str(num):
-    prefixes = {
-        0: '',
-        3: 'k',
-        6: 'M',
-        9: 'G',
-        12: 'T',
-        15: 'P',
-        18: 'E',
-        21: 'Z',
-        24: 'Y'
-    }
-    precision = 3
+def num_str(num, precision=3):
+    num = float(num)
+    for unit in ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']:
+        if num < 10**3:
+            break
+        num /= 10**3
 
-    shifts = 0
-    while num >= 10**precision:
-        shifts += 1
-        num /= 10
-    truncated = round(num)
+    # how many digits should we show?
+    tmp_num = num
+    for i in range(precision):
+        if tmp_num < 1:
+            break
+        tmp_num /= 10
+        precision -= 1
+    if num.is_integer():
+        precision = 0
 
-    prefix_power = math.ceil(shifts/3.0)*3
-    prefix = prefixes[prefix_power]
-
-    divisor = 10**(prefix_power-shifts)
-    truncated /= divisor
-    if truncated.is_integer():
-        truncated = int(truncated)
-    return str(truncated)+prefix
+    format_str = "%."+str(precision)+"f"+unit
+    return format_str % (num)
 
 
 class _MemInfo(object):
