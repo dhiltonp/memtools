@@ -33,6 +33,34 @@ def num_str(num, precision=3):
     return format_str % (num)
 
 
+def find_referrers(obj, all_objects=None):
+    """
+    Returns all objects that directly or indirectly refer to obj, restricted to those in all_objects.
+
+    If all_objects isn't passed, it will be set via gc.get_objects().
+
+    If you want to include stack frames (to be able to find the function where objects are defined
+    or referrenced), use all_objects=muppy.get_objects(include_frames=True)
+    """
+    if all_objects is None:
+        gc.collect()
+        all_objects = gc.get_objects()
+    referred_objects = [obj]
+    referred_object_ids = {id(obj)}
+    all_object_ids = {id(o) for o in all_objects}
+    referred_objects_length = len(referred_objects)
+    while True:
+        referrers = gc.get_referrers(*referred_objects)
+        for referrer in referrers:
+            if id(referrer) not in referred_object_ids and id(referrer) in all_object_ids:
+                referred_objects.append(referrer)
+                referred_object_ids.add(id(referrer))
+        if referred_objects_length != len(referred_objects):
+            referred_objects_length = len(referred_objects)
+        else:
+            return referred_objects
+
+
 class _MemInfo(object):
     def __init__(self):
         self.has_dicts = False

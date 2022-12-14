@@ -1,5 +1,5 @@
 from pympler import asizeof, muppy
-from .memgraph import _MemInfo, _MemNode, _RootNode, _MemEdge, MemGraph, num_str
+from .memgraph import _MemInfo, _MemNode, _RootNode, _MemEdge, MemGraph, num_str, find_referrers
 
 
 def test_num_str():
@@ -12,6 +12,20 @@ def test_num_str():
     assert num_str(1234567) == "1.23M"
 
     assert num_str(1000000) == "1M"
+
+
+def test_find_referrers():
+    a = {}
+    b = {'a': a}
+    c = {'b': b}
+    d = {'c': c, 'a': a}
+    e = {'d': d}
+    f = {'e': e, 'c': c}
+    a['f'] = f
+
+    all_objects = muppy.get_objects()
+    referred_objects = find_referrers(a, all_objects)
+    assert len(referred_objects) == 6
 
 
 class TestMemInfo:
@@ -173,4 +187,3 @@ class TestMemGraph:
 
         g = MemGraph(muppy.get_objects())
         g.view()
-
